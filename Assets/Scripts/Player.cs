@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     {
         _anim = GetComponent<Animator>();
     }
+
     void Update()
     {
         Move();
