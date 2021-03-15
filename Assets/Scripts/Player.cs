@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     public bool _isHit;
     public bool _isBoomTime;
 
+    public GameObject[] followers;
+
     Animator _anim;
 
     void Awake()
@@ -93,7 +95,7 @@ public class Player : MonoBehaviour
                 rigidR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 rigidL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
-            case 3:
+            default:
                 GameObject bulletRR = _objectManager.MakeObj("BulletPlayerA");
                 bulletRR.transform.position = transform.position + Vector3.right * 0.35f;
 
@@ -238,7 +240,10 @@ public class Player : MonoBehaviour
                     if (_power == _maxPower)
                         _score += 500;
                     else
+                    {
                         _power++;
+                        AddFollower();
+                    }
                     break;
                 case "Boom":
                     if (_boom == _maxBoom)
@@ -255,6 +260,16 @@ public class Player : MonoBehaviour
         }
     }
     
+    void AddFollower()
+    {
+        if (_power == 4)
+            followers[0].SetActive(true);
+        else if (_power == 5)
+            followers[1].SetActive(true);
+        else if (_power == 6)
+            followers[2].SetActive(true);
+    }
+
     void OffBoomEffect()
     {
         _boomEffect.SetActive(false);
