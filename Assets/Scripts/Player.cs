@@ -29,12 +29,47 @@ public class Player : MonoBehaviour
     public bool _isBoomTime;
 
     public GameObject[] followers;
+    public bool _isRespawnTime;
 
     Animator _anim;
+    SpriteRenderer _sprRen;
 
     void Awake()
     {
+        Debug.Log(_isRespawnTime);
         _anim = GetComponent<Animator>();
+        _sprRen = GetComponent<SpriteRenderer>();
+        
+    }
+
+    void OnEnable()
+    {
+        Unbeatable();
+        Invoke("Unbeatable", 3);
+    }
+
+    void Unbeatable()
+    {
+        _isRespawnTime = !_isRespawnTime;
+
+        if (_isRespawnTime) //#.무적 타임 (투명)
+        {
+            _sprRen.color = new Color(1, 1, 1, 0.5f);
+
+            for(int index = 0; index < followers.Length; index++)
+            {
+                followers[index].GetComponent<SpriteRenderer>().color = new Color(1,1,1,0.5f);
+            }
+        }
+        else //#.무적 타임 종료
+        {
+            _sprRen.color = new Color(1, 1, 1, 1);
+
+            for (int index = 0; index < followers.Length; index++)
+            {
+                followers[index].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+            }
+        }
     }
 
     void Update()
@@ -208,6 +243,9 @@ public class Player : MonoBehaviour
 
         else if(collision.gameObject.tag == "Enemy"|| collision.gameObject.tag =="EnemyBullet") //플레이어가 적이나, 적총알에 맞았을 경우
         {
+            if (_isRespawnTime)
+                return;
+
             if (_isHit)
                 return;
 
