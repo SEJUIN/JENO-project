@@ -16,4 +16,13 @@ public class Item : MonoBehaviour
     {
         _rigid.velocity = Vector2.down * 1.5f;
     }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "BorderBullet")
+        {
+            gameObject.SetActive(false);
+            transform.rotation = Quaternion.identity;
+        }
+    }
 }
