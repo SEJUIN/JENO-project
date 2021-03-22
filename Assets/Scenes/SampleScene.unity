@@ -3658,6 +3658,8 @@ MonoBehaviour:
     type: 3}
   bulletBossBPrefab: {fileID: 1674443886250084321, guid: c7668491d7057ac4c8cf181d0c7ed4f1,
     type: 3}
+  explosionPrefab: {fileID: 2592230179358833796, guid: 82b6e1f15d5689247aa34e93119f5dd4,
+    type: 3}
 --- !u!4 &1926566532
 Transform:
   m_ObjectHideFlags: 0

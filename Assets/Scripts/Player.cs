@@ -252,6 +252,7 @@ public class Player : MonoBehaviour
             _isHit = true;
             _life--;
             _gameManager.UpdateLifeIcon(_life);
+            _gameManager.CallExplosion(transform.position, "P");
 
             gameObject.SetActive(false);
             collision.gameObject.SetActive(false);
