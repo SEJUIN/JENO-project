@@ -253,6 +253,9 @@ public class Player : MonoBehaviour
             _life--;
             _gameManager.UpdateLifeIcon(_life);
 
+            gameObject.SetActive(false);
+            collision.gameObject.SetActive(false);
+
             if (_life == 0)
             {
                 _gameManager.GameOver();
@@ -261,9 +264,6 @@ public class Player : MonoBehaviour
             {
                 _gameManager.RespawnPlayer();
             }
-            gameObject.SetActive(false);
-            collision.gameObject.SetActive(false);
-            //Destroy(collision.gameObject);
         }
 
         else if (collision.gameObject.tag == "Item")
