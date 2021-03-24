@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
         switch(_enemyName)
         {
             case "B":
-                _health = 3000;
+                _health = 200;
                 Invoke("Stop", 2f);
                 break;
             case "L":
@@ -92,6 +92,8 @@ public class Enemy : MonoBehaviour
 
     void FireFoward()
     {
+        if (_health <= 0)
+            return;
         //Debug.Log("앞으로 4발 발사.");
         GameObject bulletR = _objectManager.MakeObj("BulletBossA");
         bulletR.transform.position = transform.position + Vector3.right * 0.75f;
@@ -123,8 +125,10 @@ public class Enemy : MonoBehaviour
 
     void FireShot()
     {
+        if (_health <= 0)
+            return;
         //Debug.Log("플레이어 방향으로 샷건.");
-        for(int index = 0; index < 5; index ++)
+        for (int index = 0; index < 5; index ++)
         {
             GameObject bullet = _objectManager.MakeObj("BulletBossB");
             bullet.transform.position = transform.position;
@@ -147,6 +151,8 @@ public class Enemy : MonoBehaviour
 
     void FireArc()
     {
+        if (_health <= 0)
+            return;
         //Debug.Log("부채모양으로 발사.");
         GameObject bullet = _objectManager.MakeObj("BulletEnemyA");
         bullet.transform.position = transform.position;
@@ -165,6 +171,8 @@ public class Enemy : MonoBehaviour
 
     void FireAround()
     {
+        if (_health <= 0)
+            return;
         //Debug.Log("원 형태로 전체 공격.");
         int roundNumA = 50;
         int roundNumB = 40;
@@ -183,7 +191,6 @@ public class Enemy : MonoBehaviour
             Vector3 rotVec = Vector3.forward * 360 * index / roundNum + Vector3.forward * 90;
             bullet.transform.Rotate(rotVec);
         }
-
 
         _curPatternCount++;
         if (_curPatternCount < _maxPatternCount[_patternIndex])
@@ -288,8 +295,13 @@ public class Enemy : MonoBehaviour
             }
 
             gameObject.SetActive(false);
+            CancelInvoke();
             transform.rotation = Quaternion.identity;
             _gameManager.CallExplosion(transform.position, _enemyName);
+
+            //#.Boss Kill
+            if(_enemyName == "B")
+                _gameManager.StageEnd();
         }
     }
 

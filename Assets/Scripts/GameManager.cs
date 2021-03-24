@@ -7,6 +7,12 @@ using System.IO;
 
 public class GameManager : MonoBehaviour
 {
+    public int _stage;
+    public Animator _stageAnim;
+    public Animator _clearAnim;
+    public Animator _fadeAnim;
+    public Transform _playerPos;
+
     public string[] _enemyObjs;
     public Transform[] _spawnPoints;
 
@@ -28,7 +34,40 @@ public class GameManager : MonoBehaviour
     {
         spawnList = new List<Spawn>();
         _enemyObjs = new string[] { "EnemyS", "EnemyM", "EnemyL", "EnemyB" };
+        StageStart();
+    }
+
+    public void StageStart()
+    {
+        //#.Stage UI Load
+        _stageAnim.SetTrigger("On");
+        _stageAnim.GetComponent<Text>().text = "Stage "+ _stage + "\nStart";
+        _clearAnim.GetComponent<Text>().text = "Stage " + _stage + "\nClear!";
+
+        //#.Enemy Spawn File Read
         ReadSpawnFile();
+
+        //#.Fade In
+        _fadeAnim.SetTrigger("In");
+    }
+
+    public void StageEnd()
+    {
+        //#.Clear UI Load
+        _clearAnim.SetTrigger("On");
+
+        //#.Fade Out
+        _fadeAnim.SetTrigger("Out");
+
+        //#.Player RePosition
+        _player.transform.position = _playerPos.position;
+
+        //#.Stage Increament
+        _stage++;
+        if (_stage > 2)
+            Invoke("GameOver", 6);
+        else
+            Invoke("StageStart", 5);
     }
 
     void ReadSpawnFile()
@@ -39,7 +78,7 @@ public class GameManager : MonoBehaviour
         spawnEnd = false;
 
         //#2.리스폰 파일 읽기
-        TextAsset textFile = Resources.Load("Stage 0") as TextAsset;
+        TextAsset textFile = Resources.Load("Stage " + _stage) as TextAsset;
         StringReader stringReader = new StringReader(textFile.text);
 
         while (stringReader != null)
