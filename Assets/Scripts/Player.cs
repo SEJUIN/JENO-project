@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
 
     public bool[] _joyControl; //어디를 눌렀는지
     public bool _isControl; //버튼을 누르고 있는지
+    public bool _isButtonA;
+    public bool _isButtonB;
 
     Animator _anim;
     SpriteRenderer _sprRen;
@@ -103,12 +105,25 @@ public class Player : MonoBehaviour
 
     void Move()
     {
+        //#.Keyboard Control Value
         float h = Input.GetAxisRaw("Horizontal");
-        if ((_isTouchRight && h == 1) || (_isTouchLeft && h == -1))
-            h = 0;
-
         float v = Input.GetAxisRaw("Vertical");
-        if ((_isTouchTop && v == 1) || (_isTouchBottom && v == -1))
+
+        //#.Joy Control Value
+        if (_joyControl[0]) { h = -1; v = 1; }
+        if (_joyControl[1]) { h = 0; v = 1; }
+        if (_joyControl[2]) { h = 1; v = 1; }
+        if (_joyControl[3]) { h = -1; v = 0; }
+        if (_joyControl[4]) { h = 0; v = 0; }
+        if (_joyControl[5]) { h = 1; v = 0; }
+        if (_joyControl[6]) { h = -1; v = -1; }
+        if (_joyControl[7]) { h = 0; v = -1; }
+        if (_joyControl[8]) { h = 1; v = -1; }
+
+        if ((_isTouchRight && h == 1) || (_isTouchLeft && h == -1) || !_isControl)
+            h = 0;
+        
+        if ((_isTouchTop && v == 1) || (_isTouchBottom && v == -1) || !_isControl)
             v = 0;
 
         Vector3 curPos = transform.position;
@@ -122,9 +137,27 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void ButtonADown()
+    {
+        _isButtonA = true;
+    }
+
+    public void ButtonAUp()
+    {
+        _isButtonA = false;
+    }
+
+    public void ButtonBDown()
+    {
+        _isButtonB = true;
+    }
+
     void Fire()
     {
-        if (!Input.GetButton("Fire1"))
+        //if (!Input.GetButton("Fire1"))
+        //    return;
+
+        if (!_isButtonA)
             return;
 
         if (_curShotDelay < _maxShotDelay)
@@ -180,7 +213,10 @@ public class Player : MonoBehaviour
 
     void Boom()
     {
-        if (!Input.GetButton("Fire2"))
+        //if (!Input.GetButton("Fire2"))
+        //    return;
+
+        if (!_isButtonB)
             return;
 
         if (_isBoomTime)
@@ -240,7 +276,10 @@ public class Player : MonoBehaviour
             if (bulletsB[index].activeSelf)
                 bulletsB[index].SetActive(false);
         }
+
+        _isButtonB = false;
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Border")
