@@ -31,6 +31,9 @@ public class Player : MonoBehaviour
     public GameObject[] followers;
     public bool _isRespawnTime;
 
+    public bool[] _joyControl; //어디를 눌렀는지
+    public bool _isControl; //버튼을 누르고 있는지
+
     Animator _anim;
     SpriteRenderer _sprRen;
 
@@ -78,6 +81,24 @@ public class Player : MonoBehaviour
         Fire();
         Boom();
         Reload();
+    }
+
+    public void JoyPanel(int type)
+    {
+        for(int index = 0; index < 9; index++)
+        {
+            _joyControl[index] = index == type;
+        }
+    }
+
+    public void JoyDown()
+    {
+        _isControl = true;
+    }
+
+    public void JoyUp()
+    {
+        _isControl = false;
     }
 
     void Move()
