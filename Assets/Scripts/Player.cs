@@ -107,8 +107,13 @@ public class Player : MonoBehaviour
     {
         //#.Keyboard Control Value
         float h = Input.GetAxisRaw("Horizontal");
+        if ((_isTouchRight && h == 1) || (_isTouchLeft && h == -1)) //PC
+            h = 0;
         float v = Input.GetAxisRaw("Vertical");
+        if ((_isTouchTop && h == 1) || (_isTouchBottom && v == -1)) //PC
+            v = 0;
 
+        /*
         //#.Joy Control Value
         if (_joyControl[0]) { h = -1; v = 1; }
         if (_joyControl[1]) { h = 0; v = 1; }
@@ -119,12 +124,13 @@ public class Player : MonoBehaviour
         if (_joyControl[6]) { h = -1; v = -1; }
         if (_joyControl[7]) { h = 0; v = -1; }
         if (_joyControl[8]) { h = 1; v = -1; }
-
+        
         if ((_isTouchRight && h == 1) || (_isTouchLeft && h == -1) || !_isControl)
             h = 0;
         
         if ((_isTouchTop && v == 1) || (_isTouchBottom && v == -1) || !_isControl)
             v = 0;
+            */
 
         Vector3 curPos = transform.position;
         Vector3 nextPos = new Vector3(h, v, 0) * _speed * Time.deltaTime;
@@ -136,12 +142,12 @@ public class Player : MonoBehaviour
             _anim.SetInteger("Input", (int)h);
         }
     }
-
+    /*
     public void ButtonADown()
     {
         _isButtonA = true;
     }
-
+    
     public void ButtonAUp()
     {
         _isButtonA = false;
@@ -151,14 +157,15 @@ public class Player : MonoBehaviour
     {
         _isButtonB = true;
     }
+    */
 
     void Fire()
     {
-        //if (!Input.GetButton("Fire1"))
-        //    return;
-
-        if (!_isButtonA)
+        if (!Input.GetButton("Fire1")) 
             return;
+
+        //if (!_isButtonA)
+        //    return;
 
         if (_curShotDelay < _maxShotDelay)
             return;
@@ -213,11 +220,11 @@ public class Player : MonoBehaviour
 
     void Boom()
     {
-        //if (!Input.GetButton("Fire2"))
-        //    return;
-
-        if (!_isButtonB)
+        if (!Input.GetButton("Fire2"))
             return;
+
+        //if (!_isButtonB)
+        //    return;
 
         if (_isBoomTime)
             return;
