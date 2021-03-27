@@ -1167,7 +1167,7 @@ MonoBehaviour:
   _score: 0
   _speed: 3
   _maxPower: 6
-  _power: 5
+  _power: 1
   _maxBoom: 3
   _boom: 0
   _maxShotDelay: 0.15
@@ -5693,8 +5693,6 @@ MonoBehaviour:
   enemyMPrefab: {fileID: 3135213525100938714, guid: 6eb3e960238c2964fbbf3cba5ffa2205,
     type: 3}
   enemySPrefab: {fileID: 316115927226826506, guid: d2f7c12776bbe9f44841117967061a72,
-    type: 3}
-  enemyFPrefab: {fileID: 316115927226826506, guid: 49e13c1373234ff4ba22cbdd626bd187,
     type: 3}
   itemCoinPrefab: {fileID: 3338416250516621500, guid: f0aa17219e8686441bd08082f8d836a6,
     type: 3}
