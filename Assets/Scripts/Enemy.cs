@@ -54,6 +54,9 @@ public class Enemy : MonoBehaviour
             case "S":
                 _health = 3;
                 break;
+            case "F":
+                _health = 3;
+                break;
         }
     }
     void Stop()
@@ -312,12 +315,19 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "BorderBullet" && _enemyName != "B")
+        if (collision.gameObject.tag == "BorderBullet" && _enemyName == "F")
+        {
+            gameObject.SetActive(false);
+            transform.rotation = Quaternion.identity;
+            _gameManager.StageEnd();
+        }
+
+        else if (collision.gameObject.tag == "BorderBullet" && _enemyName != "B")
         {
             gameObject.SetActive(false);
             transform.rotation = Quaternion.identity;
         }
-            
+
         else if (collision.gameObject.tag == "PlayerBullet")
         {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();

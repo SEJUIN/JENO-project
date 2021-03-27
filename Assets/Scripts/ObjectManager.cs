@@ -8,6 +8,7 @@ public class ObjectManager : MonoBehaviour
     public GameObject enemyLPrefab;
     public GameObject enemyMPrefab;
     public GameObject enemySPrefab;
+    public GameObject enemyFPrefab;
     public GameObject itemCoinPrefab;
     public GameObject itemPowerPrefab;
     public GameObject itemBoomPrefab;
@@ -24,6 +25,7 @@ public class ObjectManager : MonoBehaviour
     GameObject[] enemyL;
     GameObject[] enemyM;
     GameObject[] enemyS;
+    GameObject[] enemyF;
 
     GameObject[] itemCoin;
     GameObject[] itemPower;
@@ -46,6 +48,7 @@ public class ObjectManager : MonoBehaviour
         enemyL = new GameObject[10];
         enemyM = new GameObject[10];
         enemyS = new GameObject[10];
+        enemyF = new GameObject[1];
 
         itemCoin = new GameObject[20];
         itemPower = new GameObject[10];
@@ -88,6 +91,12 @@ public class ObjectManager : MonoBehaviour
         {
             enemyS[index] = Instantiate(enemySPrefab);
             enemyS[index].SetActive(false);
+        }
+
+        for (int index = 0; index < enemyF.Length; index++)
+        {
+            enemyF[index] = Instantiate(enemyFPrefab);
+            enemyF[index].SetActive(false);
         }
 
         //#2.Item
@@ -176,6 +185,9 @@ public class ObjectManager : MonoBehaviour
             case "EnemyS":
                 targetPool = enemyS;
                 break;
+            case "EnemyF":
+                targetPool = enemyF;
+                break;
             case "ItemCoin":
                 targetPool = itemCoin;
                 break;
@@ -237,6 +249,9 @@ public class ObjectManager : MonoBehaviour
                 break;
             case "EnemyS":
                 targetPool = enemyS;
+                break;
+            case "EnemyF":
+                targetPool = enemyF;
                 break;
             case "ItemCoin":
                 targetPool = itemCoin;

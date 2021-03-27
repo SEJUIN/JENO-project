@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         spawnList = new List<Spawn>();
-        _enemyObjs = new string[] { "EnemyS", "EnemyM", "EnemyL", "EnemyB" };
+        _enemyObjs = new string[] { "EnemyS", "EnemyM", "EnemyL", "EnemyB", "EnemyF" };
         StageStart();
     }
 
@@ -126,6 +126,9 @@ public class GameManager : MonoBehaviour
         {
             case "S":
                 enemyIndex = 0;
+                break;
+            case "F":
+                enemyIndex = 4;
                 break;
             case "M":
                 enemyIndex = 1;
