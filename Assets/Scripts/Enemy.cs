@@ -271,17 +271,17 @@ public class Enemy : MonoBehaviour
             //#.Random Ratio Item Drop
             int ran = _enemyName == "B" ? 0 : Random.Range(0, 10);
 
-            if(ran < 3) //Not Item 30%
+            if(ran < 5) //Not Item 30%
             {
                 Debug.Log("Not Item");
             }
-            else if (ran < 6)
+            else if (ran < 8)
             {
                 //Coin 30%
                 GameObject itemCoin = _objectManager.MakeObj("ItemCoin");
                 itemCoin.transform.position = transform.position;
             }
-            else if (ran < 8)
+            else if (ran < 9)
             {
                 //Power
                 GameObject itemPower = _objectManager.MakeObj("ItemPower");
