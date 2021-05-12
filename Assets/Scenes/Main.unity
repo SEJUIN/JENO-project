@@ -668,8 +668,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a7b16285155c34c9e11228de9268fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenu: {fileID: 0}
-  stageMenu: {fileID: 0}
+  mainMenu: {fileID: 435020642}
+  stageMenu: {fileID: 1625549764}
 --- !u!1 &363907277
 GameObject:
   m_ObjectHideFlags: 0
