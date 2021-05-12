@@ -1167,7 +1167,7 @@ MonoBehaviour:
   _score: 0
   _speed: 3
   _maxPower: 6
-  _power: 1
+  _power: 5
   _maxBoom: 3
   _boom: 0
   _maxShotDelay: 0.15

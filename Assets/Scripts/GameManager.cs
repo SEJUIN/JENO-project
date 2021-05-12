@@ -37,8 +37,14 @@ public class GameManager : MonoBehaviour
         StageStart();
     }
 
+    void Start()
+    {
+        
+    }
+
     public void StageStart()
     {
+        _stage = PlayerData.instance.curStage;
         //#.Stage UI Load
         _stageAnim.SetTrigger("On");
         _stageAnim.GetComponent<Text>().text = "Stage "+ _stage + "\nStart";
@@ -63,11 +69,16 @@ public class GameManager : MonoBehaviour
         _player.transform.position = _playerPos.position;
 
         //#.Stage Increament
-        _stage++;
-        if (_stage > 2)
-            Invoke("GameOver", 6);
-        else
-            Invoke("StageStart", 5);
+        PlayerData.instance.curStage++;
+        //_stage++;
+        PlayerData.instance.ChangeSceneFlag++;
+        Debug.Log(PlayerData.instance.ChangeSceneFlag);
+        Invoke("LoadSceneMain", 5);
+    }
+
+    void LoadSceneMain()
+    {
+        SceneManager.LoadScene("Main");
     }
 
     void ReadSpawnFile()
