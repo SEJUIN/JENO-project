@@ -44,7 +44,6 @@ public class Player : MonoBehaviour
         Debug.Log(_isRespawnTime);
         _anim = GetComponent<Animator>();
         _sprRen = GetComponent<SpriteRenderer>();
-        
     }
 
     void OnEnable()

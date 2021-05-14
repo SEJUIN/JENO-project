@@ -51,27 +51,22 @@ public class MainController : MonoBehaviour
 
     void GameLoad()
     {
-        //if (!PlayerPrefs.HasKey("curStage"))
-        //    return;
         if (PlayerData.instance.ChangeSceneFlag == 2)
         {
             int stage = PlayerData.instance.curStage;
-            for (int i = 0; i < stage-1; i++)
+            for (int i = 0; i < stage; i++)
                 stageButtons[i].GetComponent<Image>().color = new Color(146 / 255f, 194 / 255f, 255 / 255f, 255 / 255f);
-            stageButtons[stage-1].GetComponent<Image>().color = new Color(255, 255, 255);
+            stageButtons[stage].GetComponent<Image>().color = new Color(255, 255, 255);
             PlayerData.instance.ChangeSceneFlag--;
         }
         else
         {
-            int stage = PlayerPrefs.GetInt("curStage");
-            //stage = 3;
-            PlayerData.instance.curStage = stage;
+            int stage = PlayerData.instance.curStage;
 
-            for (int i = 0; i < stage-1; i++)
+            for (int i = 0; i < stage; i++)
                 stageButtons[i].GetComponent<Image>().color = new Color(146 / 255f, 194 / 255f, 255 / 255f, 255 / 255f);
             stageButtons[stage].GetComponent<Image>().color = new Color(255, 255, 255);
         }       
-
     }
 
     public void OnClickStage(int i)
@@ -98,7 +93,6 @@ public class MainController : MonoBehaviour
     {
         mainMenu.SetActive(false);
         stageMenu.SetActive(true);
-        //SceneManager.LoadScene("StageMode");
     }
     public void InfiniteMode()
     {
