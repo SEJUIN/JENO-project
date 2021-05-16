@@ -7,13 +7,13 @@ using UnityEngine.UI;
 public class MainController : MonoBehaviour
 {
     [SerializeField]
-    GameObject mainMenu;
+    GameObject mainMenu = null;
     [SerializeField]
-    GameObject stageMenu;
+    GameObject stageMenu = null;
     [SerializeField]
-    GameObject myRecordMenu;
+    GameObject myRecordMenu = null;
     [SerializeField]
-    GameObject[] stageButtons;
+    GameObject[] stageButtons = null;
 
     int onClickStage;
 
@@ -43,29 +43,29 @@ public class MainController : MonoBehaviour
         #if UNITY_EDITOR
             Debug.Log("저장 및 종료");
             UnityEditor.EditorApplication.isPlaying = false;
-        #else
-            PlayerPrefs.SetInt("curStage", gameManager._stage);
+#else
+            PlayerPrefs.SetInt("canAccessStage", gameManager._canAccessStage);
             PlayerPrefs.Save();
-        #endif
+#endif
     }
 
-    void GameLoad()
+    void GameLoad() //단순 UI표현
     {
         if (PlayerData.instance.ChangeSceneFlag == 2)
         {
-            int stage = PlayerData.instance.curStage;
-            for (int i = 0; i < stage; i++)
+            int canAccessStage = PlayerData.instance.canAccessStage;
+            for (int i = 0; i < canAccessStage; i++)
                 stageButtons[i].GetComponent<Image>().color = new Color(146 / 255f, 194 / 255f, 255 / 255f, 255 / 255f);
-            stageButtons[stage].GetComponent<Image>().color = new Color(255, 255, 255);
+            stageButtons[canAccessStage].GetComponent<Image>().color = new Color(255, 255, 255);
             PlayerData.instance.ChangeSceneFlag--;
         }
         else
         {
-            int stage = PlayerData.instance.curStage;
+            int canAccessStage = PlayerData.instance.canAccessStage;
 
-            for (int i = 0; i < stage; i++)
+            for (int i = 0; i < canAccessStage; i++)
                 stageButtons[i].GetComponent<Image>().color = new Color(146 / 255f, 194 / 255f, 255 / 255f, 255 / 255f);
-            stageButtons[stage].GetComponent<Image>().color = new Color(255, 255, 255);
+            stageButtons[canAccessStage].GetComponent<Image>().color = new Color(255, 255, 255);
         }       
     }
 
@@ -78,11 +78,11 @@ public class MainController : MonoBehaviour
 
     public void StartStage(int onClickStage)
     {
-        if(onClickStage-1 > PlayerData.instance.curStage)
+        if(onClickStage > PlayerData.instance.canAccessStage)
         {
             Debug.Log("이전 스테이지를 완료하세요.");
         }
-        else
+        else //curStage로 게임 실행
         {
             PlayerData.instance.curStage = onClickStage;
             SceneManager.LoadScene("StageMode");

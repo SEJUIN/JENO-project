@@ -294,13 +294,13 @@ public class Enemy : MonoBehaviour
                 itemBoom.transform.position = transform.position;
             }
 
-            gameObject.SetActive(false);
-            CancelInvoke();
             transform.rotation = Quaternion.identity;
             _gameManager.CallExplosion(transform.position, _enemyName);
+            gameObject.SetActive(false);
+            //CancelInvoke();
 
             //#.Boss Kill
-            if(_enemyName == "B")
+            if (_enemyName == "B")
                 _gameManager.StageEnd();
         }
     }

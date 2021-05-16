@@ -25,7 +25,9 @@ public class PlayerData : MonoBehaviour
     }
 
     //게임 내에서 씬이동시 유지하고 픈 값
+    
     public int curStage;
+    public int canAccessStage;
     public int infModeBestScore;
     public int ChangeSceneFlag;
     //ChangeSceneFlag == 1 : MainScene

@@ -8,6 +8,7 @@ using System.IO;
 public class GameManager : MonoBehaviour
 {
     public int _stage;
+    public int _canAccessStage;
     public Animator _stageAnim;
     public Animator _clearAnim;
     public Animator _fadeAnim;
@@ -44,7 +45,7 @@ public class GameManager : MonoBehaviour
 
     public void StageStart()
     {
-        _stage = PlayerData.instance.curStage;
+        _stage = PlayerData.curStage;
         //#.Stage UI Load
         _stageAnim.SetTrigger("On");
         _stageAnim.GetComponent<Text>().text = "Stage "+ _stage + "\nStart";
