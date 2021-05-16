@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
 
     public void StageStart()
     {
-        _stage = PlayerData.curStage;
+        _stage = PlayerData.instance.curStage;
         //#.Stage UI Load
         _stageAnim.SetTrigger("On");
         _stageAnim.GetComponent<Text>().text = "Stage "+ _stage + "\nStart";
