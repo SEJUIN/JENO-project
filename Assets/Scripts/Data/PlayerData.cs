@@ -10,12 +10,12 @@ public class PlayerData : MonoBehaviour
     //불러올수 있게함.
     public static PlayerData instance = null;
 
-    private void Awake()
+    void Awake()
     {
-        if(instance == null)
+        DontDestroyOnLoad(gameObject);
+        if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {

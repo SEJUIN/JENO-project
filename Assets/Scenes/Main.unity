@@ -1998,6 +1998,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curStage: 1
+  canAccessStage: 0
   infModeBestScore: 0
   ChangeSceneFlag: 1
 --- !u!1 &1045351529
@@ -5078,7 +5079,7 @@ PrefabInstance:
     - target: {fileID: 1124274079165257340, guid: d46e573d8b67ab747a86f73474279ec5,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1124274079165257340, guid: d46e573d8b67ab747a86f73474279ec5,
         type: 3}

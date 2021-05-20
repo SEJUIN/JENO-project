@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public Image[] _boomImage;
     public GameObject _gameOverSet;
     public ObjectManager _objectManager;
+    public MainController _mainController;
 
     public List<Spawn> spawnList;
     public int spawnIndex;
@@ -70,9 +71,11 @@ public class GameManager : MonoBehaviour
         _player.transform.position = _playerPos.position;
 
         //#.Stage Increament
-        PlayerData.instance.curStage++;
+        if(PlayerData.instance.canAccessStage == PlayerData.instance.curStage)
+            PlayerData.instance.canAccessStage++;
         //_stage++;
         PlayerData.instance.ChangeSceneFlag++;
+        _mainController.GameSave();
         Debug.Log(PlayerData.instance.ChangeSceneFlag);
         Invoke("LoadSceneMain", 5);
     }
