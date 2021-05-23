@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public Transform[] _spawnPoints;
 
     public float _nextSpawnDelay;
+    public float _maxSpawnDelay;
     public float _curSpawnDelay;
 
     public GameObject _player;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     public GameObject _gameOverSet;
     public ObjectManager _objectManager;
     public MainController _mainController;
+    public Player _playerCS;
 
     public List<Spawn> spawnList;
     public int spawnIndex;
@@ -36,13 +38,69 @@ public class GameManager : MonoBehaviour
     {
         spawnList = new List<Spawn>();
         _enemyObjs = new string[] { "EnemyS", "EnemyM", "EnemyL", "EnemyB" };
-        StageStart();
+        if (SceneManager.GetActiveScene().name == "StageMode")
+            StageStart();
+        else if (SceneManager.GetActiveScene().name == "InfiniteMode")
+            InfiniteStart();
     }
 
     void Start()
     {
         
     }
+
+    void Update()
+    {
+        if (SceneManager.GetActiveScene().name == "InfiniteMode")
+        {
+            Player playerLogic = _player.GetComponent<Player>();
+            if (playerLogic._life != 0)
+            {
+                _curSpawnDelay += Time.deltaTime;
+
+                if (_curSpawnDelay > _nextSpawnDelay && !spawnEnd)
+                {
+                    GenerateEnemyInf();
+                    _maxSpawnDelay = Random.Range(0.5f, 3f);
+                    _curSpawnDelay = 0;
+                }
+
+                //#.UI Score Update
+                _scoreText.text = string.Format("{0:n0}", playerLogic._score);
+            }
+        }
+    }
+    public void InfiniteStart()
+    {
+        //#.Stage UI Load
+        _stageAnim.SetTrigger("On");
+        _stageAnim.GetComponent<Text>().text = "Infinite Mode" + "\nStart";
+        _clearAnim.GetComponent<Text>().text = "Infinite Mode " + "\nEnd!";
+
+        //#.Fade In
+        _fadeAnim.SetTrigger("In");
+
+        //#.Enemy generate
+        GenerateEnemyInf();
+    }
+
+    public void GenerateEnemyInf()
+    {
+        _curSpawnDelay += Time.deltaTime;
+
+        if (_curSpawnDelay > _maxSpawnDelay)
+        {
+            InfSpawnEnemy();
+            _maxSpawnDelay = Random.Range(0.5f, 3f);
+            _curSpawnDelay = 0;
+        }
+
+        //#.UI Score Update
+        Player playerLogic = _player.GetComponent<Player>();
+        _scoreText.text = string.Format("{0:n0}", playerLogic._score);
+
+    }
+
 
     public void StageStart()
     {
@@ -75,7 +133,6 @@ public class GameManager : MonoBehaviour
             PlayerData.instance.canAccessStage++;
         //_stage++;
         PlayerData.instance.ChangeSceneFlag++;
-        _mainController.GameSave();
         Debug.Log(PlayerData.instance.ChangeSceneFlag);
         Invoke("LoadSceneMain", 5);
     }
@@ -117,21 +174,35 @@ public class GameManager : MonoBehaviour
 
         //#.첫번째 스폰 딜레이 적용
         _nextSpawnDelay = spawnList[0].delay;
+        SpawnEnemy();
     }
 
-    void Update()
+
+
+    void InfSpawnEnemy()
     {
-        _curSpawnDelay += Time.deltaTime;
+        int ranEnemy = Random.Range(0, 3); //Enemy Kinds
+        int ranPoint = Random.Range(0, 9); //Enemy SpawnPoint
+        GameObject enemy = _objectManager.MakeObj(_enemyObjs[ranEnemy]);
+        enemy.transform.position = _spawnPoints[ranPoint].position;
 
-        if(_curSpawnDelay > _nextSpawnDelay && !spawnEnd)
+        Rigidbody2D rigid = enemy.GetComponent<Rigidbody2D>();
+        Enemy enemyLogic = enemy.GetComponent<Enemy>();
+        enemyLogic._player = _player;
+        enemyLogic._objectManager = _objectManager;
+
+        if (ranPoint == 5 || ranPoint == 6) //#.Right Spawn
         {
-            SpawnEnemy();
-            _curSpawnDelay = 0;
+            enemy.transform.Rotate(Vector3.back * 90);
+            rigid.velocity = new Vector2(enemyLogic._speed * (-1), -1);
         }
-
-        //#.UI Score Update
-        Player playerLogic = _player.GetComponent<Player>();
-        _scoreText.text = string.Format("{0:n0}", playerLogic._score);
+        else if (ranPoint == 7 || ranPoint == 8) //#.Left Spawn
+        {
+            enemy.transform.Rotate(Vector3.forward * 90);
+            rigid.velocity = new Vector2(enemyLogic._speed, -1);
+        }
+        else //#.Front Spawn
+            rigid.velocity = new Vector2(0, enemyLogic._speed * (-1));
     }
 
     void SpawnEnemy()
@@ -246,6 +317,8 @@ public class GameManager : MonoBehaviour
 
     public void GameRetry()
     {
-        SceneManager.LoadScene(0);
+        PlayerData.instance.ChangeSceneFlag++;
+        Debug.Log(PlayerData.instance.ChangeSceneFlag);
+        LoadSceneMain();
     }
 }
