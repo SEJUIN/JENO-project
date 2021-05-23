@@ -11,17 +11,14 @@ public class LoadingScene : MonoBehaviour
         PlayerData.instance.canAccessStage = 1;
         PlayerData.instance.infModeBestScore = 0;
         PlayerData.instance.ChangeSceneFlag = 1;
-#if UNITY_EDITOR
-
-#else
+        
         if (PlayerPrefs.GetInt("canAccessStage") != 1)
             PlayerData.instance.canAccessStage = PlayerPrefs.GetInt("canAccessStage");
-#endif
-
     }
 
     void Update()
     {
+        
         if (Input.anyKey)
         {
             SceneManager.LoadScene("Main");

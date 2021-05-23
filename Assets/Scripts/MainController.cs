@@ -42,6 +42,7 @@ public class MainController : MonoBehaviour
     {
         #if UNITY_EDITOR
             Debug.Log("저장");
+            //UnityEditor.EditorApplication.isPlaying = false;
 #else
             PlayerPrefs.SetInt("canAccessStage", gameManager._canAccessStage);
             PlayerPrefs.Save();
