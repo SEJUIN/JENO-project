@@ -17,14 +17,8 @@ public class MainController : MonoBehaviour
 
     int onClickStage;
 
-    void Awake()
-    {
-        
-    }
-
     void Start()
     {
-        
         if (PlayerData.instance.ChangeSceneFlag == 2)
         {
             StageMode();
@@ -62,7 +56,7 @@ public class MainController : MonoBehaviour
         else
         {
             int canAccessStage = PlayerData.instance.canAccessStage;
-
+            Debug.Log(canAccessStage);
             for (int i = 0; i < canAccessStage; i++)
                 stageButtons[i].GetComponent<Image>().color = new Color(146 / 255f, 194 / 255f, 255 / 255f, 255 / 255f);
             stageButtons[canAccessStage-1].GetComponent<Image>().color = new Color(255, 255, 255);

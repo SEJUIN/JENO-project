@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
     public Image[] _boomImage;
     public GameObject _gameOverSet;
     public ObjectManager _objectManager;
-    public MainController _mainController;
 
     public List<Spawn> spawnList;
     public int spawnIndex;
@@ -41,7 +40,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     public void StageStart()
@@ -75,7 +74,6 @@ public class GameManager : MonoBehaviour
             PlayerData.instance.canAccessStage++;
         //_stage++;
         PlayerData.instance.ChangeSceneFlag++;
-        _mainController.GameSave();
         Debug.Log(PlayerData.instance.ChangeSceneFlag);
         Invoke("LoadSceneMain", 5);
     }
