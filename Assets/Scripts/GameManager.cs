@@ -19,9 +19,11 @@ public class GameManager : MonoBehaviour
 
     public float _nextSpawnDelay;
     public float _curSpawnDelay;
+    public float _maxSpawnDelay;
 
     public GameObject _player;
     public Text _scoreText;
+    public Text _overText;
     public Image[] _lifeImage;
     public Image[] _boomImage;
     public GameObject _gameOverSet;
@@ -35,12 +37,37 @@ public class GameManager : MonoBehaviour
     {
         spawnList = new List<Spawn>();
         _enemyObjs = new string[] { "EnemyS", "EnemyM", "EnemyL", "EnemyB" };
-        StageStart();
+        if (SceneManager.GetActiveScene().name == "StageMode")
+            StageStart();
+        else if (SceneManager.GetActiveScene().name == "InfiniteMode")
+            InfiniteStart();
     }
 
-    void Start()
+    void Update()
     {
+        _curSpawnDelay += Time.deltaTime;
 
+        if (SceneManager.GetActiveScene().name == "StageMode")
+        {
+            if (_curSpawnDelay > _nextSpawnDelay && !spawnEnd)
+            {
+                SpawnEnemy();
+                _curSpawnDelay = 0;
+            }
+        }
+        else if (SceneManager.GetActiveScene().name == "InfiniteMode")
+        {
+            if (_curSpawnDelay > _maxSpawnDelay)
+            {
+                InfSpawnEnemy();
+                _maxSpawnDelay = Random.Range(0.5f, 2f);
+                _curSpawnDelay = 0;
+            }
+        }
+
+        //#.UI Score Update
+        Player playerLogic = _player.GetComponent<Player>();
+        _scoreText.text = string.Format("{0:n0}", playerLogic._score);
     }
 
     public void StageStart()
@@ -76,6 +103,45 @@ public class GameManager : MonoBehaviour
         PlayerData.instance.ChangeSceneFlag++;
         Debug.Log(PlayerData.instance.ChangeSceneFlag);
         Invoke("LoadSceneMain", 5);
+    }
+
+    void InfiniteStart()
+    {
+        _stage = 0;
+        //#.Stage UI Load
+        _stageAnim.SetTrigger("On");
+        _stageAnim.GetComponent<Text>().text = "InfiniteMode"+"\nStart!";
+
+        //#.Fade In
+        _fadeAnim.SetTrigger("In");
+    }
+
+    void InfSpawnEnemy()
+    {
+        int ranEnemy = Random.Range(0, 3);
+        int ranPoint = Random.Range(0, 9);
+        GameObject enemy = _objectManager.MakeObj(_enemyObjs[ranEnemy]);
+        Rigidbody2D rigid = enemy.GetComponent<Rigidbody2D>();
+        Enemy enemyLogic = enemy.GetComponent<Enemy>();
+
+        enemyLogic._player = _player;
+        enemyLogic._gameManager = this;
+        enemyLogic._objectManager = _objectManager;
+
+        if (ranPoint == 5 || ranPoint == 6) //#.Right Spawn
+        {
+            enemy.transform.Rotate(Vector3.back * 90);
+            rigid.velocity = new Vector2(enemyLogic._speed * (-1), -1);
+        }
+        else if (ranPoint == 7 || ranPoint == 8) //#.Left Spawn
+        {
+            enemy.transform.Rotate(Vector3.forward * 90);
+            rigid.velocity = new Vector2(enemyLogic._speed, -1);
+        }
+        else //#.Front Spawn
+            rigid.velocity = new Vector2(0, enemyLogic._speed * (-1));
+
+        enemy.transform.position = _spawnPoints[ranPoint].position;
     }
 
     void LoadSceneMain()
@@ -115,21 +181,6 @@ public class GameManager : MonoBehaviour
 
         //#.첫번째 스폰 딜레이 적용
         _nextSpawnDelay = spawnList[0].delay;
-    }
-
-    void Update()
-    {
-        _curSpawnDelay += Time.deltaTime;
-
-        if(_curSpawnDelay > _nextSpawnDelay && !spawnEnd)
-        {
-            SpawnEnemy();
-            _curSpawnDelay = 0;
-        }
-
-        //#.UI Score Update
-        Player playerLogic = _player.GetComponent<Player>();
-        _scoreText.text = string.Format("{0:n0}", playerLogic._score);
     }
 
     void SpawnEnemy()
@@ -239,11 +290,22 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        _gameOverSet.SetActive(true);
+        if (SceneManager.GetActiveScene().name == "StageMode")
+        {
+            _overText.GetComponent<Text>().text = "GameOver!";
+            _gameOverSet.SetActive(true);
+        }
+        else if (SceneManager.GetActiveScene().name == "InfiniteMode")
+        {
+            _overText.GetComponent<Text>().text = "Score : " + _scoreText.text;
+            _gameOverSet.SetActive(true);
+            Player playerLogic = _player.GetComponent<Player>();
+            PlayerData.instance.infModeBestScore = playerLogic._score;
+        }
     }
 
     public void GameRetry()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 }

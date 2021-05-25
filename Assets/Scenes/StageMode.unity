@@ -5549,6 +5549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stage: 1
+  _canAccessStage: 0
   _stageAnim: {fileID: 774032970}
   _clearAnim: {fileID: 1987315216}
   _fadeAnim: {fileID: 77989377}
@@ -5569,8 +5570,10 @@ MonoBehaviour:
   - {fileID: 1515898189}
   _nextSpawnDelay: 0
   _curSpawnDelay: 0
+  _maxSpawnDelay: 0
   _player: {fileID: 321541198}
   _scoreText: {fileID: 277407946}
+  _overText: {fileID: 2146294121}
   _lifeImage:
   - {fileID: 1788704580}
   - {fileID: 1036819532}
@@ -6162,8 +6165,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 30}
-  m_SizeDelta: {x: 1080, y: 150}
+  m_AnchoredPosition: {x: 0, y: 97.8}
+  m_SizeDelta: {x: 1080, y: 285.51068}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2146294121
 MonoBehaviour:

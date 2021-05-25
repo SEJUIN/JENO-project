@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 public class MainController : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class MainController : MonoBehaviour
     GameObject myRecordMenu = null;
     [SerializeField]
     GameObject[] stageButtons = null;
+    [SerializeField]
+    Text StageText;
+    [SerializeField]
+    Text InfModeText;
 
     int onClickStage;
 
@@ -92,6 +97,12 @@ public class MainController : MonoBehaviour
     {
         SceneManager.LoadScene("InfiniteMode");
     }
+    public void MyRecordButton()
+    {
+        myRecordSetting();
+        mainMenu.SetActive(false);
+        myRecordMenu.SetActive(true);
+    }
 
     public void Exit()
     {
@@ -103,12 +114,24 @@ public class MainController : MonoBehaviour
 #endif
     }
 
+    public void myRecordSetting()
+    {
+        StageText.GetComponent<Text>().text = (PlayerData.instance.canAccessStage-1).ToString();
+        InfModeText.GetComponent<Text>().text = PlayerData.instance.infModeBestScore.ToString();
+    }
+
     public void BackButton()
     {
         if (stageMenu.activeSelf == true) //stageMenu 활성화중일경우
         {
             mainMenu.SetActive(true);
             stageMenu.SetActive(false);
+        }
+
+        else if (myRecordMenu.activeSelf == true) //myRecordMenu 활성화중일경우
+        {
+            mainMenu.SetActive(true);
+            myRecordMenu.SetActive(false);
         }
     }
 }
